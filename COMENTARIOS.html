@@ -1,0 +1,97 @@
+<link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="COMENTARIOS.css">
+<style>
+    .comments-section {
+        margin-top: 30px;
+        padding: 20px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .comments-section h2, .comments-section h3 {
+        color: #333;
+    }
+
+    .comments-section form {
+        margin-bottom: 20px;
+    }
+
+    .comments-section input[type="text"],
+    .comments-section textarea {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .comments-section input[type="submit"] {
+        background-color: #007BFF;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .comments-section input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .comment {
+        padding: 10px 0;
+    }
+
+    .comment p {
+        margin: 0;
+    }
+
+</style>
+<div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+    <div class="section"></div>
+    <div class="container">
+<div class="comments-section">
+    <h2>Deja un comentario</h2>
+    <form id="commentForm">
+        <label for="nombre">Nombre:</label><br>
+        <input type="text" id="nombre" name="nombre" required><br><br>
+
+        <label for="comentario">Comentario:</label><br>
+        <textarea id="comentario" name="comentario" rows="4" required></textarea><br><br>
+
+        <input type="submit" value="Enviar">
+    </form>
+
+    <h3>Comentarios Recientes:</h3>
+    <div id="comentarios">
+        <!-- Aquí se mostrarán los comentarios recientes -->
+    </div>
+</div>
+
+<script>
+    document.getElementById('commentForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Evita que se recargue la página
+
+        const nombre = document.getElementById('nombre').value;
+        const comentario = document.getElementById('comentario').value;
+
+        if (nombre && comentario) {
+            // Crear un nuevo comentario
+            const newComment = document.createElement('div');
+            newComment.classList.add('comment');
+            newComment.innerHTML = `<p><strong>${nombre}:</strong> ${comentario}</p>`;
+
+            // Agregar el nuevo comentario a la lista de comentarios
+            document.getElementById('comentarios').appendChild(newComment);
+
+            // Limpiar los campos del formulario
+            document.getElementById('nombre').value = '';
+            document.getElementById('comentario').value = '';
+
+            // Aquí puedes agregar código para guardar el comentario en la base de datos usando AJAX
+        }
+    });
+</script>

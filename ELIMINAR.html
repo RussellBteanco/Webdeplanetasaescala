@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="ELIMINAR.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eliminar Producto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            padding: 60px;
+            margin: 0;
+        }
+        .form-container {
+            background-color: rgba(255, 255, 255, 0.9); /* Hacer el fondo un poco transparente */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            max-width: 600px; /* Reducir el tamaño del formulario */
+            margin: auto;
+            position: relative;
+            z-index: 2; /* Asegurar que esté por encima del fondo en movimiento */
+        }
+        .form-container h2 {
+            text-align: center;
+            color: #333;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            width: 130px;
+            font-weight: bold;
+            font-size: 14px;
+            margin-right: 10px;
+            color: #555;
+        }
+        .form-group input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .form-group button {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 16px; /* Hacer el botón más pequeño */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            width: auto; /* Ajustar el ancho del botón al contenido */
+            align-self: center;
+            transition: background-color 0.3s ease; /* Animación suave */
+        }
+        .form-group button:hover {
+            background-color: #c82333;
+        }
+        #suggestions {
+            border: 1px solid #ccc;
+            background-color: #fff;
+            max-height: 120px;
+            overflow-y: auto;
+            position: absolute;
+            width: calc(100% - 60px); /* Reducir el ancho */
+            border-radius: 4px;
+            z-index: 10;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+            margin-top: 2px;
+        }
+        #suggestions div {
+            padding: 8px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+            font-size: 12px; /* Reducir el tamaño de la fuente */
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        #suggestions div:hover {
+            background-color: #f0f0f0;
+        }
+    </style>
+    <script>
+        function showSuggestions(value) {
+            if (value.length === 0) {
+                document.getElementById("suggestions").innerHTML = "";
+                return;
+            }
+            
+            fetch('ENCONTRAR.php?q=' + encodeURIComponent(value))
+                .then(response => response.json())
+                .then(data => {
+                    let suggestions = "";
+                    data.forEach(item => {
+                        suggestions += `<div onclick="selectSuggestion('${item.id}', '${item.nombre}', '${item.precio}', '${item.cantidad}', '${item.descuento}', '${item.impuesto}', '${item.total}', '${item.imagen}', '${item.fecha}')">${item.nombre}</div>`;
+                    });
+                    document.getElementById("suggestions").innerHTML = suggestions;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function selectSuggestion(id, nombre, precio, cantidad, descuento, impuesto, total, imagen, fecha) {
+            document.getElementById("id").value = id || '';
+            document.getElementById("nombre").value = nombre || '';
+            document.getElementById("precio").value = precio || '';
+            document.getElementById("cantidad").value = cantidad || '';
+            document.getElementById("descuento").value = descuento || '';
+            document.getElementById("impuesto").value = impuesto || '';
+            document.getElementById("total").value = total || '';
+            document.getElementById("imagen").value = imagen || '';
+            document.getElementById("fecha").value = fecha || '';
+
+            document.getElementById("suggestions").innerHTML = "";  // Limpiar las sugerencias
+        }
+    </script>
+</head>
+<body>
+    <div id="stars"></div>
+    <div id="stars2"></div>
+    <div id="stars3"></div>
+    <div class="section"></div>
+    <div class="form-container">
+        <h2>Eliminar Producto</h2>
+        <form action="ELIMINAR.php" method="POST">
+            <div class="form-group">
+                <label for="id">ID:</label>
+                <input type="text" id="id" name="id" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" name="nombre" onkeyup="showSuggestions(this.value)" required autocomplete="off">
+            </div>
+            <div id="suggestions"></div> <!-- Línea de filtrado debajo de Nombre -->
+            <div class="form-group">
+                <label for="precio">Precio:</label>
+                <input type="text" id="precio" name="precio" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="cantidad">Cantidad:</label>
+                <input type="text" id="cantidad" name="cantidad" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="descuento">Descuento:</label>
+                <input type="text" id="descuento" name="descuento" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="impuesto">Impuesto:</label>
+                <input type="text" id="impuesto" name="impuesto" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="total">Total:</label>
+                <input type="text" id="total" name="total" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="imagen">Imagen:</label>
+                <input type="text" id="imagen" name="imagen" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="fecha">Fecha:</label>
+                <input type="text" id="fecha" name="fecha" required readonly>
+            </div>
+            <div class="form-group">
+                <button type="submit">Eliminar</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

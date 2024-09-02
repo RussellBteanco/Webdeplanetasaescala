@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Producto</title>
+</head>
+<body>
+    <div class="container">
+        <h2>Agregar Producto</h2>
+        <form action="INSERTARIMAGEN.php" method="post" enctype="multipart/form-data">
+            <label for="nombre">Nombre del Producto:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="precio">Precio:</label>
+            <input type="number" id="precio" name="precio" step="0.01" required>
+
+            <label for="imagen">Imagen del Producto:</label>
+            <input type="file" id="imagen" name="imagen" accept="image/*" required>
+
+            <input type="submit" value="Agregar Producto">
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galería de Imágenes</title>
+  
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        padding: 20px;
+        margin: 0;
+        overflow: auto; /* Permite la barra de desplazamiento si es necesario */
+    }
+    nav {
+        background-color: #007BFF; /* Color de fondo azul */
+        padding: 10px;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .nav-title {
+        color: white;
+        font-size: 20px;
+        font-weight: bold;
+        margin-right: 20px;
+    }
+    nav .search-container {
+        flex: 1;
+        margin-right: 20px;
+    }
+    nav .search-container input[type="text"] {
+        padding: 5px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        width: 100%;
+        max-width: 200px;
+    }
+    nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        align-items: center;
+    }
+    nav ul li {
+        margin-right: 20px;
+    }
+    nav ul li a {
+        color: white;
+        text-decoration: none;
+    }
+    nav ul li a:hover {
+        text-decoration: underline;
+    }
+    .carousel {
+        position: relative;
+        width: 100%;
+        max-width: 800px;
+        margin: 20px auto;
+        overflow: hidden;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    .carousel-inner {
+        display: flex;
+        transition: transform 0.5s ease-in-out;
+    }
+    .carousel-item {
+        min-width: 100%;
+        box-sizing: border-box;
+    }
+    .carousel-item img {
+        width: 100%;
+        border-radius: 10px;
+    }
+    .carousel-controls {
+        position: absolute;
+        top: 50%;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        transform: translateY(-50%);
+    }
+    .carousel-controls button {
+        background-color: rgba(0, 0, 0, 0.5);
+        border: none;
+        color: white;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 18px;
+    }
+    .carousel-controls button:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+    }
+    .title {
+        text-align: center;
+        margin: 20px 0;
+        font-size: 24px;
+        color: #ffffff;
+    }
+    .container {
+        max-height: 100vh; /* Limita la altura del contenedor */
+        overflow-y: auto; /* Agrega la barra de desplazamiento vertical si es necesario */
+        padding: 20px;
+    }
+    .views-counter {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 18px;
+        color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div id="stars"></div>
+  <div id="stars2"></div>
+  <div id="stars3"></div>
+  <div class="section"></div>
+  <div class="container">
+    <nav id="menu">
+        <div class="nav-title">WEB DE RUSSELL BETANCO</div>
+        <div class="search-container">
+            <input type="text" placeholder="Buscar...">
+        </div>
+        <input type="checkbox" id="responsive-menu" onclick="updatemenu()">
+        <label></label>
+        <ul>
+            <li><a href="http://localhost/PROYECTOFINAL/PAGINADEIMAGENES.html">AGREGAR COMPRA</a></li>
+            <li><a href="http://localhost/PROYECTOFINAL/ELIMINAR.html">ELIMINAR COMPRA</a></li>
+            <li><a href="http://localhost/PROYECTOFINAL/MODIFICAR.html">MODIFICAR COMPRA</a></li>
+            <li><a href="http://localhost/PROYECTOFINAL/CONSULTAGENERAL.php">VER COMPRAS REALIZADAS</a></li>
+            <li><a href="http://localhost/PROYECTOFINAL/COMENTARIOS.html">COMENTAR</a></li>
+        </ul>
+    </nav>
+
+    <h1 class="title">SPACE STORE</h1>
+    <h1 class="title">Venta de planetas a escala</h1>
+
+    <div class="carousel">
+        <div class="carousel-inner">
+            <div class="carousel-item">
+                <img src="IMAGENES/percivallowellmarsglobe6inch_360x.webp" alt="Imagen 1">
+            </div>
+            <div class="carousel-item">
+                <img src="IMAGENES/89137_magic_360x.webp" alt="Imagen 2">
+            </div>
+            <div class="carousel-item">
+                <img src="IMAGENES/81678csmall-500_360x.webp" alt="Imagen 3">
+            </div>
+            <div class="carousel-item">
+                <img src="IMAGENES/plutoglobe6inch_360x.webp" alt="Imagen 4">
+            </div>
+            <div class="carousel-item">
+                <img src="IMAGENES/Earth_6_globe_1-removebg-preview_360x.webp" alt="Imagen 5">
+            </div>
+        </div>
+        <div class="carousel-controls">
+            <button id="prevBtn">&#10094;</button>
+            <button id="nextBtn">&#10095;</button>
+        </div>
+    </div>
+
+    <div class="views-counter">
+        <p>Visitas: <span id="viewCount">0</span></p>
+    </div>
+
+    <script>
+        // Función para obtener el número de vistas del servidor
+        function fetchViewCount() {
+            fetch('contador.php')
+                .then(response => response.text())
+                .then(count => {
+                    document.getElementById('viewCount').innerText = count;
+                })
+                .catch(error => console.error('Error al obtener el contador de vistas:', error));
+        }
+
+        // Llamar a la función para actualizar el contador al cargar la página
+        fetchViewCount();
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const carouselInner = document.querySelector('.carousel-inner');
+        let index = 0;
+
+        function updateCarousel() {
+            const itemWidth = carouselInner.querySelector('.carousel-item').offsetWidth;
+            carouselInner.style.transform = `translateX(-${index * itemWidth}px)`;
+        }
+
+        prevBtn.addEventListener('click', () => {
+            index = (index > 0) ? index - 1 : carouselInner.children.length - 1;
+            updateCarousel();
+        });
+
+        nextBtn.addEventListener('click', () => {
+            index = (index < carouselInner.children.length - 1) ? index + 1 : 0;
+            updateCarousel();
+        });
+
+        window.addEventListener('resize', updateCarousel);
+    </script>
+</body>
+</html>
